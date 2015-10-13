@@ -4,14 +4,16 @@ python:
 - '2.7'
 
 before_install:
-  # Remove existing zmq3 repo lik salt-bootstrap is doing
-  - sudo apt-get remove -y libzmq3
+  # Remove existing zmq3 repo like salt-bootstrap is doing
+  - sudo apt-get remove -y -o DPkg::Options::=--force-confold --purge libzmq3
+  - sudo apt-get autoremove -y -o DPkg::Options::=--force-confold --purge
   - sudo ls -lah /etc/apt/sources.list.d/
   - sudo rm -f /etc/apt/sources.list.d/travis_ci_zeromq3-source.list
   # Refresh
   - sudo apt-get update -y
   # Install salt minion on the same box
-  - curl -L http://bootstrap.saltstack.org | sudo sh -s -- git develop
+  - curl -L https://bootstrap.saltstack.com -o install_salt.sh
+  - sudo sh install_salt.sh
   # Set up our installation bits
   - sudo mkdir -p /srv/salt/states
   - sudo cp .travis/minion /etc/salt/minion

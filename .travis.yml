@@ -1,13 +1,14 @@
-# Minimal Travis verfication for salt states
-
 # Since salt/salt states aren't a language proper, this is a hackaround for now
-# We should probably build a basebox for travis at some point
-#    (see https://github.com/travis-ci/travis-ci/issues/1549)
 language: python
 python:
 - '2.7'
 
 before_install:
+  # Remove existing zmq3 repo lik salt-bootstrap is doing
+  - sudo apt-get remove -y libzmq3
+  - sudo ls -lah /etc/apt/sources.list.d/
+  - sudo rm -f /etc/apt/sources.list.d/travis_ci_zeromq3-source.list
+  # Refresh
   - sudo apt-get update -y
   # Install salt minion on the same box
   - curl -L http://bootstrap.saltstack.org | sudo sh -s -- git develop
@@ -26,3 +27,6 @@ install:
 
 script:
   - sudo salt-call state.show_lowstate --local --retcode-passthrough
+
+notifications:
+  email: false

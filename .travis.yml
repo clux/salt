@@ -20,13 +20,11 @@ install:
   # Copy the states and restart
   - sudo cp -r . /srv/salt/states
   - sudo service salt-minion restart
-
-  # If anything bad happened on restarting the minion,
-  # we'll want to see the logs
-  - sudo cat /var/log/salt/*
+  - sudo cat /var/log/salt/* || true
 
 script:
   - sudo salt-call state.show_lowstate --local --retcode-passthrough
+  - sudo cat /var/log/salt/* || true
 
 notifications:
   email: false

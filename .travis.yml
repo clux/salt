@@ -11,7 +11,7 @@ before_install:
   - sudo rm -f /etc/apt/sources.list.d/travis_ci_zeromq3-source.list
   # Install salt minion on the same box
   - curl -L https://bootstrap.saltstack.com -o install_salt.sh
-  - sudo sh install_salt.sh stable -P # use pip for now
+  - sudo sh install_salt.sh -P stable # use pip for now
   # Set up our installation bits
   - sudo mkdir -p /srv/salt/states
   - sudo cp .travis/minion /etc/salt/minion
